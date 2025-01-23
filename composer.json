@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
         "openai-php/client": "^0.10.3",
-        "openai-php/laravel": "^0.10.2"
+        "openai-php/laravel": "^0.10.2",
+        "orhanerday/open-ai": "^5.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

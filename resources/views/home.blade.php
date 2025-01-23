@@ -5,37 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Explorer</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap" async defer></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f1f8f7;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{{ asset('images/ciel.jpg') }}') no-repeat center center fixed;;
+            background-size: cover;
+            background-position: center;
+            color: white;
         }
 
         .container {
             text-align: center;
-            background-color: #ffffff;
+            background: rgba(255, 255, 255, 0.85);
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             max-width: 600px;
-            width: 100%;
+            width: 90%;
+            color: #333;
         }
 
         h1 {
             color: #00796b;
             font-size: 2.5rem;
             margin-bottom: 20px;
+            font-weight: bold;
         }
 
         p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #555;
             margin-bottom: 20px;
         }
@@ -48,11 +54,12 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
             background-color: #004d40;
+            transform: translateY(-3px);
         }
 
         #loading {
@@ -82,13 +89,21 @@
 
         #weather-result h3 {
             color: #00796b;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #weather-result p {
+            font-size: 1.2rem;
+            color: #333;
         }
 
         #activities-list {
             margin-top: 20px;
             padding: 10px;
             border-radius: 5px;
-            background: #f7f7f7;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #ddd;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             max-height: 300px;
@@ -106,6 +121,7 @@
         #activities-list li:before {
             content: "✔️";
             margin-right: 10px;
+            color: #00796b;
         }
     </style>
 </head>
@@ -128,9 +144,7 @@
             <p><strong>Vitesse du vent :</strong> <span id="wind-speed"></span> m/s</p>
         </div>
 
-        <ul id="activities-list">
-            <!-- Suggestions d'activités ajoutées dynamiquement -->
-        </ul>
+        <ul id="activities-list"></ul>
     </div>
 
     <script>
@@ -142,6 +156,7 @@
             loading.style.display = 'block';
             weatherResult.style.display = 'none';
             activitiesList.style.display = 'none';
+            activitiesList.innerHTML = ''; // Reset activities
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -158,28 +173,33 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
+                        if (data.weather) {
+                            document.getElementById('location-name').textContent = data.weather.name;
+                            document.getElementById('temperature').textContent = data.weather.main.temp;
+                            document.getElementById('condition').textContent = data.weather.weather[0].description;
+                            document.getElementById('humidity').textContent = data.weather.main.humidity;
+                            document.getElementById('wind-speed').textContent = data.weather.wind.speed;
 
-                        if (data.weather && data.activities_suggestions) {
-                            const weather = data.weather;
-                            const activities = data.activities_suggestions;
+                            weatherResult.style.display = 'block';
 
-                            document.getElementById('location-name').textContent = weather.name;
-                            document.getElementById('temperature').textContent = weather.main.temp;
-                            document.getElementById('condition').textContent = weather.weather[0].description;
-                            document.getElementById('humidity').textContent = weather.main.humidity;
-                            document.getElementById('wind-speed').textContent = weather.wind.speed;
+                            // Display activities
+                            if (data.activities_suggestions && data.activities_suggestions.length > 0) {
+                                data.activities_suggestions.forEach(activity => {
+                                    const li = document.createElement('li');
+                                    li.textContent = activity;
+                                    activitiesList.appendChild(li);
+                                });
+                            } else {
+                                const li = document.createElement('li');
+                                li.textContent = 'Aucune activité suggérée pour le moment.';
+                                activitiesList.appendChild(li);
+                            }
 
-                            activitiesList.innerHTML = activities.length > 0
-                                ? activities.map(activity => `<li>${activity}</li>`).join('')
-                                : '<li>Aucune suggestion d\'activité disponible pour le moment.</li>';
                             activitiesList.style.display = 'block';
                         } else {
-                            alert('Données météo ou suggestions d\'activités indisponibles.');
+                            alert('Aucune donnée disponible.');
                         }
-
                         loading.style.display = 'none';
-                        weatherResult.style.display = 'block';
                     })
                     .catch(error => {
                         alert("Erreur : " + error.message);

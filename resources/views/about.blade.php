@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Local Explorer</title>
+    <title>About Us - Local Explorer</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         * {
@@ -76,23 +76,52 @@
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
-        .explore-btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 15px 40px;
-            background-color: #00796b;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 30px;
+        /* About Section */
+        .about-section {
+            padding: 50px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin: 40px 0;
+            color: #ddd;
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
             font-size: 1.2rem;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            line-height: 1.6;
+        }
+
+        .gallery-section {
+            margin: 40px 0;
+            padding: 20px;
+        }
+
+        .gallery-section h2 {
+            font-size: 2.5rem;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease-in-out;
         }
 
-        .explore-btn:hover {
-            background-color: #00796b;
-            transform: translateY(-5px);
+        .gallery img:hover {
+            transform: scale(1.05);
         }
 
         /* Footer */
@@ -125,7 +154,7 @@
         <div class="logo">Local Explorer</div>
         <div class="nav-links">
             <a href="{{ route('landing') }}">Home</a>
-            <a href="{{ route('about') }}">About</a>
+            <a href="{{ route('about') }}" class="active">About</a>
             <a href="{{ route('explore') }}">Explore</a>
             <a href="{{ route('contact') }}">Contact</a>
         </div>
@@ -133,10 +162,38 @@
 
     <!-- Hero Section -->
     <header>
-        <h1>Welcome to Local Explorer</h1>
-        <p>Discover activities and experiences tailored to your location and the weather.</p>
-        <a href="{{ route('explore') }}" class="explore-btn">Explore Now</a>
+        <h1>About Local Explorer</h1>
+        <p>We provide personalized travel and activity suggestions based on your location and weather conditions.</p>
     </header>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h2>Our Mission</h2>
+        <p>
+            At Local Explorer, we aim to help you discover exciting local activities based on the weather and your preferences. Whether you're looking to explore the outdoors or find cozy indoor experiences, we provide tailored suggestions to suit your needs.
+        </p>
+        <h2>Why Choose Us?</h2>
+        <p>
+            We combine local knowledge with real-time weather data to offer unique activity ideas that enhance your experience. Our platform is easy to navigate, and we provide you with options that match your mood and environment. You’ll never run out of fun things to do in your area, no matter the weather.
+        </p>
+        <h2>How It Works</h2>
+        <p>
+            Simply input your location and preferred activity type, and we’ll provide you with a list of suggestions based on current weather conditions. We also offer recommendations for both indoor and outdoor activities, so you can always make the most of your surroundings.
+        </p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <h2>Our Gallery</h2>
+        <div class="gallery">
+            <img src="{{ asset('images/gallery1.jpg') }}" alt="Gallery Image 1">
+            <img src="{{ asset('images/gallery3.jpg') }}" alt="Gallery Image 3">
+            <img src="{{ asset('images/gallery2.png') }}" alt="Gallery Image 2">
+            <img src="{{ asset('images/gallery33.jpg') }}" alt="Gallery Image 4">
+
+
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
