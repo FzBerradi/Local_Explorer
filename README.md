@@ -106,4 +106,4 @@ Dynamique : L'application ajuste les recommandations en temps réel en fonction 
 
 ### Explications supplémentaires :
 - Ce fichier `README.md` contient **toutes les étapes nécessaires** pour démarrer l'application, de l'installation des services Docker à la configuration des API.
-- Il couvre **l'installation des dépendances** (Node.js, PHP, Composer, Docker), la configuration des clés API externes nécessaires (OpenWeatherMap, Google Maps, OpenAI), et le démarrage du projet via Docker.
+- Il couvre **l'installation des dépendances** (Node.js, PHP, Composer, Docker), la configuration des clés API externes nécessaires (OpenWeatherMap, Google Maps, Gemini), et le démarrage du projet via Docker.
